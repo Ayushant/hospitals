@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Newsreader', 'Fraunces', Georgia, serif;
+    --font-sans: 'Instrument Sans', 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+    --color-bg-main: #F3F3EF;
+    --color-bg-alt: #E9ECE7;
+    --color-text-main: #24332F;
+    --color-text-secondary: #66716C;
+    --color-primary: #245C50;
+    --color-accent: #86A99A;
+    --color-border: #D9DED8;
+    --color-surface-white: #FFFFFF;
+    --color-warm: #C47B60;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: #24332F;
+    background-color: #F3F3EF;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+    letter-spacing: -0.025em;
+  }
+
+  /* Accessible visible focus states */
+  :focus-visible {
+    outline: 2px solid #245C50;
+    outline-offset: 2px;
+  }
+}
+
+/* Hairline dividers matching #D9DED8 */
+.border-hairline {
+  border-color: #D9DED8;
+}
+
+/* Subtle 1-2px hover shift states */
+.hover-shift {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+.hover-shift:hover {
+  transform: translateY(-1.5px);
+}
+
+.hover-shift-x {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-shift-x:hover {
+  transform: translateX(2px);
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

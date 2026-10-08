@@ -1,0 +1,8 @@
+{
+  "name": "Remix Synergy Health 360",
+  "description": "Scottsdale primary care and integrative health clinic offering same-day appointments, InstaCare 360 membership, and comprehensive wellness.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
