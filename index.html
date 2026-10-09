@@ -10,6 +10,31 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <script>
+      // Ignore Vite HMR / WebSocket connection errors in dev sandbox as per instructions
+      window.addEventListener('unhandledrejection', function (event) {
+        var reason = event.reason;
+        if (
+          reason &&
+          (typeof reason === 'string'
+            ? reason.indexOf('WebSocket') !== -1
+            : (reason.message && reason.message.indexOf('WebSocket') !== -1) ||
+              (reason.stack && reason.stack.indexOf('@vite/client') !== -1))
+        ) {
+          event.preventDefault();
+        }
+      });
+      window.addEventListener('error', function (event) {
+        if (
+          event.message &&
+          (event.message.indexOf('WebSocket') !== -1 ||
+            (event.filename && event.filename.indexOf('@vite/client') !== -1))
+        ) {
+          event.preventDefault();
+        }
+      });
+    </script>
+
     <!-- Google Fonts: Newsreader & Fraunces (Headings) + Instrument Sans (UI & Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

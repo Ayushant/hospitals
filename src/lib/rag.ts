@@ -1,4 +1,5 @@
 import { KNOWLEDGE_CHUNKS, KnowledgeChunk, checkEmergencySafety, SERVICES_LIST } from '../data/knowledge';
+import { scrubPhi } from './hipaa-guard';
 
 export interface ChatMessage {
   id: string;
@@ -89,28 +90,22 @@ export async function askSynergyCareAssistant(
   // 1. Mandatory Safety check runs BEFORE calling any LLM
   if (checkEmergencySafety(question)) {
     return {
-      text: 'Call 911 now. For a mental health crisis, call or text 988. Immediate medical intervention is required for critical symptoms.',
-      sources: ['Emergency Triage Protocol'],
+      text: 'EMERGENCY NOTICE: Call 911 immediately. For a mental health crisis or suicide distress, call or text 988. Immediate medical intervention is required for critical symptoms.',
+      sources: ['Emergency Triage Protocol (911 / 988)'],
       isEmergency: true
     };
   }
 
-  // Privacy protection check
-  const privateKeywords = ['ssn', 'social security', 'date of birth', 'dob', 'insurance card', 'my blood test is 140/90'];
-  if (privateKeywords.some((k) => question.toLowerCase().includes(k))) {
-    return {
-      text: 'For your privacy, please don’t share medical details here. Our care team can help at 480-553-6168 or through the Athenahealth patient portal.',
-      sources: ['Patient Privacy Policy'],
-      isEmergency: false
-    };
-  }
+  // 2. Client-Side HIPAA & Arizona Data Privacy Scrubbing
+  const phiResult = scrubPhi(question);
+  const cleanQuestion = phiResult.sanitizedText;
 
-  // 2. Try server endpoint
+  // 3. Try server endpoint
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question })
+      body: JSON.stringify({ question: cleanQuestion })
     });
 
     if (res.ok) {
