@@ -7,16 +7,27 @@ export const ApproachSection: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Substantial Supporting Visual */}
-          <div className="lg:col-span-6">
-            <div className="rounded-xl border border-[#D9DED8] bg-[#E9ECE7] p-8 sm:p-10 shadow-xs space-y-4">
+          <div className="lg:col-span-6 space-y-4">
+            <div className="rounded-xl border border-[#D9DED8] bg-[#E9ECE7] p-6 sm:p-8 shadow-xs space-y-4">
               <div className="flex items-center justify-between text-[11px] font-mono text-[#66716C] tracking-wider uppercase">
                 <span>The 360° Care Journey</span>
                 <span>Mind · Body · Longevity</span>
               </div>
-              <WindingPathSvg className="w-full h-auto max-h-[360px]" />
+              <WindingPathSvg className="w-full h-auto max-h-[300px]" />
               <div className="pt-2 text-center text-[12px] font-mono text-[#66716C]">
                 Primary Care → Integrated Specialists → Prevention → Wellness
               </div>
+            </div>
+
+            {/* Official Experience Graphic */}
+            <div className="rounded-xl overflow-hidden border border-[#D9DED8] bg-white shadow-xs">
+              <img
+                src="/images/experience_image.png"
+                alt="Synergy Health 360 Patient Care Experience"
+                className="w-full h-auto object-cover max-h-[220px]"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+              />
             </div>
           </div>
 

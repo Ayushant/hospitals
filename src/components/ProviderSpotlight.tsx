@@ -6,24 +6,36 @@ export const ProviderSpotlight: React.FC = () => {
     <section id="provider" className="py-20 md:py-28 bg-[#E9ECE7] transition-colors border-t border-[#D9DED8]">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Intentional Refined Media Placeholder */}
+          {/* Left Column: Authentic Doctor Photography & Credentials */}
           <div className="lg:col-span-5">
-            <div className="aspect-[4/3] sm:aspect-[5/4] w-full rounded-xl border border-[#D9DED8] bg-[#FFFFFF] p-8 sm:p-10 flex flex-col justify-between shadow-xs">
-              <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#66716C]">
-                [ Media Placeholder ]
+            <div className="rounded-xl border border-[#D9DED8] bg-[#FFFFFF] overflow-hidden shadow-xs">
+              <div className="relative aspect-[4/3] sm:aspect-[5/4] bg-[#E9ECE7]">
+                <img
+                  src="/images/dr_vin_jain_doctor.jpg"
+                  alt="Dr. Vinamra Jain, MD - Integrative Wellness and Primary Care Physician at Synergy Health 360"
+                  className="w-full h-full object-cover object-top filter saturate-[0.98]"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute top-3 left-3 bg-[#245C50] text-white text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded">
+                  Lead Physician
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <h3 className="text-2xl sm:text-3xl font-serif font-normal text-[#24332F]">
-                  Dr. Vin Jain, MD
-                </h3>
-                <p className="text-[14px] text-[#245C50] font-medium">
-                  Personalized and preventive care
+              <div className="p-6 space-y-3">
+                <div>
+                  <h3 className="text-2xl font-serif font-normal text-[#24332F]">
+                    Dr. Vinamra Jain, MD
+                  </h3>
+                  <p className="text-[14px] text-[#245C50] font-medium">
+                    Integrative Wellness & Primary Care Physician
+                  </p>
+                </div>
+                <p className="text-[13px] text-[#66716C] leading-relaxed">
+                  Trained under Dr. Andrew Weil at the University of Arizona Integrative Medicine Fellowship.
                 </p>
-              </div>
-
-              <div className="text-[11px] font-mono text-[#66716C] tracking-wider pt-2 border-t border-[#D9DED8]">
-                BOARD-CERTIFIED • AAFP • ACP
+                <div className="text-[11px] font-mono text-[#66716C] tracking-wider pt-3 border-t border-[#D9DED8]">
+                  BOARD-CERTIFIED • ABFM • ACP • AAFP
+                </div>
               </div>
             </div>
           </div>

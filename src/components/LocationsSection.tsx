@@ -75,8 +75,23 @@ export const LocationsSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Custom Static SVG Map Illustration */}
-          <div className="lg:col-span-7">
+          {/* Right Column: Scottsdale Pavilion Photo + Custom Static Map Illustration */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="rounded-xl overflow-hidden border border-[#D9DED8] bg-[#FFFFFF] shadow-xs">
+              <div className="relative aspect-[16/9] sm:aspect-[2/1] bg-[#E9ECE7]">
+                <img
+                  src="/images/scottsdale_clinic_pavilion.jpg"
+                  alt="Synergy Health 360 Scottsdale Clinic Pavilion and Medical Offices"
+                  className="w-full h-full object-cover object-center filter saturate-[0.98]"
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                />
+                <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-md text-[12px] font-medium text-[#24332F] border border-[#D9DED8]">
+                  Scottsdale Medical Suites & Outpatient Pavilion
+                </div>
+              </div>
+            </div>
+
             <div className="p-4 sm:p-5 rounded-xl border border-[#D9DED8] bg-[#FFFFFF] shadow-xs">
               <div className="mb-2 text-[11px] font-mono text-[#66716C] tracking-wider uppercase">
                 Location Map • Scottsdale & Greater Phoenix

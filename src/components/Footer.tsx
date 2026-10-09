@@ -20,16 +20,19 @@ export const Footer: React.FC = () => {
         {/* Main Footer Row */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-10 border-b border-white/10">
           {/* Brand & Narrative */}
-          <div className="md:col-span-5 space-y-3">
-            <span className="text-2xl font-serif font-normal text-white">
-              Synergy Health 360°
-            </span>
+          <div className="md:col-span-5 space-y-4">
+            <img
+              src="/images/synergy_footer_logo.png"
+              alt="Synergy Health 360"
+              className="h-10 w-auto object-contain brightness-0 invert opacity-90"
+              referrerPolicy="no-referrer"
+            />
             <p className="text-[14px] text-white/70 max-w-sm leading-relaxed">
               Personalized, patient-centered primary care and integrative health in Scottsdale, Arizona.
               Dedicated to unhurried consultations and preventive longevity.
             </p>
             <div className="pt-1 text-[12.5px] font-mono text-[#86A99A]">
-              Scottsdale • Greater Phoenix
+              Scottsdale (Desert Cove & Kierland) • Greater Phoenix
             </div>
           </div>
 

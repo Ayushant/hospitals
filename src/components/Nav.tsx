@@ -11,12 +11,17 @@ export const Nav: React.FC<NavProps> = ({ onOpenChat }) => {
   return (
     <header className="sticky top-0 z-40 bg-[#F3F3EF]/95 backdrop-blur-md border-b border-[#D9DED8] transition-colors">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10 h-20 md:h-[84px] flex items-center justify-between">
-        {/* Left: Wordmark */}
+        {/* Left: Wordmark & Logo */}
         <a
           href="#"
-          className="text-2xl md:text-[1.65rem] font-serif font-normal tracking-[-0.02em] text-[#24332F] hover:opacity-85 transition-opacity"
+          className="flex items-center gap-3 hover:opacity-90 transition-opacity"
         >
-          Synergy Health 360°
+          <img
+            src="/images/synergy_logo.png"
+            alt="Synergy Health 360"
+            className="h-10 sm:h-11 w-auto object-contain"
+            referrerPolicy="no-referrer"
+          />
         </a>
 
         {/* Center: Navigation Links */}

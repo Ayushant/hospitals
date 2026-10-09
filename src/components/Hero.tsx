@@ -62,13 +62,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenChat }) => {
 
           {/* Right Column: Large, Authentic Healthcare Photography (48% space) */}
           <div className="lg:col-span-5 relative">
-            <div className="relative overflow-hidden rounded-lg bg-[#E9ECE7] shadow-xs">
+            <div className="relative overflow-hidden rounded-xl bg-[#E9ECE7] shadow-sm border border-[#D9DED8]">
               <img
-                src="/src/assets/images/clinic_consultation_doctor_patient_1791484481987.jpg"
+                src="/images/clinic_consultation.jpg"
                 alt="Doctor and patient in a thoughtful, unhurried consultation at Synergy Health 360 in Scottsdale"
-                className="w-full h-auto aspect-[4/3] sm:aspect-[5/4] lg:aspect-[4/5] object-cover object-center filter saturate-[0.96]"
+                className="w-full h-auto aspect-[4/3] sm:aspect-[5/4] lg:aspect-[4/5] object-cover object-center filter saturate-[0.98]"
                 referrerPolicy="no-referrer"
+                loading="eager"
               />
+              <div className="absolute bottom-3 left-3 right-3 bg-white/92 backdrop-blur-md px-3.5 py-2.5 rounded-lg border border-[#D9DED8] text-[12.5px] text-[#24332F] flex items-center justify-between shadow-xs">
+                <span className="font-medium">Dr. Vinamra Jain, MD & Care Team</span>
+                <span className="text-[#245C50] font-mono text-[11px] uppercase tracking-wider">Scottsdale, AZ</span>
+              </div>
             </div>
           </div>
         </div>
