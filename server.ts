@@ -1,10 +1,16 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import http from 'http';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { processChatRequest, processNavigateRequest } from './src/server/ai-services.ts';
+import {
+  applyCors,
+  getClientIp,
+  isRateLimited,
+  enforceLength,
+} from './src/server/http-guard.ts';
 
 dotenv.config();
 
@@ -12,7 +18,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.json());
+// Hard cap on JSON body size to prevent oversized payload abuse.
+app.use(express.json({ limit: '16kb' }));
+
+// Share one CORS + rate-limit guard across every /api route.
+app.use('/api', (req: Request, res: Response, next: NextFunction) => {
+  if (applyCors(req as any, res as any)) return;
+  const ip = getClientIp(req as any);
+  if (isRateLimited(ip)) {
+    res.status(429).json({
+      error: 'Too many requests. Please slow down and try again shortly.',
+    });
+    return;
+  }
+  next();
+});
 
 const PORT = process.env.PORT || 3000;
 
@@ -21,7 +41,11 @@ const PORT = process.env.PORT || 3000;
 // -------------------------------------------------------------
 app.post('/api/chat', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { question } = req.body;
+    const question = enforceLength(req.body?.question);
+    if (!question) {
+      res.status(400).json({ error: 'A short question is required (max 500 characters).' });
+      return;
+    }
     const result = await processChatRequest(question);
     res.status(result.status).json(result.data);
   } catch (error) {
@@ -39,7 +63,11 @@ app.post('/api/chat', async (req: Request, res: Response): Promise<void> => {
 // -------------------------------------------------------------
 app.post('/api/navigate', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { need } = req.body;
+    const need = enforceLength(req.body?.need);
+    if (!need) {
+      res.status(400).json({ error: 'A short description is required (max 500 characters).' });
+      return;
+    }
     const result = await processNavigateRequest(need);
     res.status(result.status).json(result.data);
   } catch (err) {

@@ -10,6 +10,9 @@
       "DOM",
       "DOM.Iterable"
     ],
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedParameters": false,
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "isolatedModules": true,

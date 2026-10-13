@@ -1,5 +1,11 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import { processNavigateRequest } from '../src/server/ai-services.ts';
+import {
+  applyCors,
+  getClientIp,
+  isRateLimited,
+  enforceLength,
+} from '../src/server/http-guard.ts';
 
 interface ExtendedRequest extends IncomingMessage {
   body?: any;
@@ -12,21 +18,17 @@ interface ExtendedResponse extends ServerResponse {
 }
 
 export default async function handler(req: ExtendedRequest, res: ExtendedResponse) {
-  // Enable CORS if accessed directly
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-
-  if (req.method === 'OPTIONS') {
-    return res.status(200).json({});
-  }
+  if (applyCors(req, res)) return;
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const ip = getClientIp(req);
+  if (isRateLimited(ip)) {
+    return res.status(429).json({
+      error: 'Too many requests. Please slow down and try again shortly.',
+    });
   }
 
   try {
@@ -38,7 +40,12 @@ export default async function handler(req: ExtendedRequest, res: ExtendedRespons
         body = {};
       }
     }
-    const need = body?.need;
+    const need = enforceLength(body?.need);
+    if (!need) {
+      return res
+        .status(400)
+        .json({ error: 'A short description is required (max 500 characters).' });
+    }
     const result = await processNavigateRequest(need);
     return res.status(result.status).json(result.data);
   } catch (error) {

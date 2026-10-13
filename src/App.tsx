@@ -18,10 +18,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F3F3EF] text-[#24332F] font-sans antialiased selection:bg-[#245C50]/15 selection:text-[#245C50]">
+      {/* Skip link for keyboard & screen-reader users (WCAG 2.4.1) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:px-4 focus:py-2 focus:bg-[#245C50] focus:text-white focus:rounded-md"
+      >
+        Skip to main content
+      </a>
+
       {/* 06. Header */}
       <Nav onOpenChat={() => setChatOpen(true)} />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {/* 05. Redesigned Hero with Large Authentic Clinic Consultation Photography */}
         <Hero onOpenChat={() => setChatOpen(true)} />
 

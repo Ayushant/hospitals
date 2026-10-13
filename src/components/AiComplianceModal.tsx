@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { X, ShieldCheck, FileText, AlertCircle, Phone, Lock, EyeOff } from 'lucide-react';
 import { LEGAL_DISCLOSURES } from '../lib/hipaa-guard';
+import { useFocusTrap } from '../lib/useFocusTrap';
 
 interface AiComplianceModalProps {
   isOpen: boolean;
@@ -8,6 +9,18 @@ interface AiComplianceModalProps {
 }
 
 export const AiComplianceModal: React.FC<AiComplianceModalProps> = ({ isOpen, onClose }) => {
+  const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, isOpen);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -16,8 +29,10 @@ export const AiComplianceModal: React.FC<AiComplianceModalProps> = ({ isOpen, on
       aria-modal="true"
       aria-labelledby="compliance-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+      onClick={onClose}
     >
       <div
+        ref={panelRef}
         className="relative w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl border border-[#D9DED8] shadow-2xl flex flex-col overflow-hidden text-[#24332F]"
         onClick={(e) => e.stopPropagation()}
       >

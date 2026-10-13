@@ -16,6 +16,14 @@ export interface PhCheckResult {
   warningMessage?: string;
 }
 
+// Non-PHI clinic contact numbers — publicly listed on the website; must not be
+// redacted as PHI. Normalized to digits-only for comparison.
+const CLINIC_PUBLIC_PHONES = ['4805536168'];
+
+// Placeholder sentinel used to shield clinic contact info from the phone regex
+// before it runs, then restored after scrubbing.
+const CLINIC_PHONE_SENTINEL = '__CLINIC_PHONE__';
+
 // Regex patterns for 18 HIPAA Safe Harbor Identifiers
 const PHI_PATTERNS = [
   {
@@ -51,15 +59,38 @@ const PHI_PATTERNS = [
 ];
 
 /**
- * Scrubs potential PHI from user input before processing or sending to any AI endpoint
+ * Scrubs potential PHI from user input before processing or sending to any AI endpoint.
+ * Enforces a maximum input length so a single query cannot exhaust Gemini tokens or logs.
  */
+const MAX_INPUT_LENGTH = 500;
+
 export function scrubPhi(input: string): PhCheckResult {
   if (!input || typeof input !== 'string') {
     return { hasPhi: false, sanitizedText: '', detectedTypes: [] };
   }
 
-  let sanitized = input;
+  // Hard cap on input length to prevent abuse and runaway LLM cost
+  let sanitized = input.slice(0, MAX_INPUT_LENGTH);
   const detectedTypes: string[] = [];
+
+  // Shield the clinic's public phone number from the phone-number regex so that
+  // "Call 480-553-6168" is preserved and not redacted as if it were patient PHI.
+  const phoneShieldSlots: string[] = [];
+  for (const digits of CLINIC_PUBLIC_PHONES) {
+    const flexiblePattern = new RegExp(
+      '(?:\\+?1[-. ]?)?\\(?' +
+        digits.slice(0, 3) +
+        '\\)?[-. ]?' +
+        digits.slice(3, 6) +
+        '[-. ]?' +
+        digits.slice(6, 10),
+      'g'
+    );
+    sanitized = sanitized.replace(flexiblePattern, (match) => {
+      phoneShieldSlots.push(match);
+      return `${CLINIC_PHONE_SENTINEL}${phoneShieldSlots.length - 1}__`;
+    });
+  }
 
   for (const { type, regex, replacement } of PHI_PATTERNS) {
     if (regex.test(sanitized)) {
@@ -74,6 +105,12 @@ export function scrubPhi(input: string): PhCheckResult {
     detectedTypes.push('Personal Diagnostic Measurement');
     sanitized = sanitized.replace(labPattern, '[REDACTED LAB VALUE]');
   }
+
+  // Restore any shielded clinic phone numbers
+  sanitized = sanitized.replace(
+    new RegExp(`${CLINIC_PHONE_SENTINEL}(\\d+)__`, 'g'),
+    (_m, idx) => phoneShieldSlots[Number(idx)] ?? ''
+  );
 
   const hasPhi = detectedTypes.length > 0;
   const warningMessage = hasPhi

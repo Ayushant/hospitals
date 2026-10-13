@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { askSynergyCareAssistant, ChatMessage } from '../lib/rag';
 import { scrubPhi } from '../lib/hipaa-guard';
+import { useFocusTrap } from '../lib/useFocusTrap';
 import { AiComplianceModal } from './AiComplianceModal';
 import {
   X,
@@ -41,6 +42,19 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, o
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(drawerRef, isOpen);
+
+  // Reflect the current chat language on <html lang> for assistive tech and
+  // HHS §1557 meaningful-access compliance.
+  useEffect(() => {
+    const html = document.documentElement;
+    const previous = html.getAttribute('lang');
+    html.setAttribute('lang', language);
+    return () => {
+      if (previous) html.setAttribute('lang', previous);
+    };
+  }, [language]);
 
   const suggestedPrompts = language === 'en'
     ? [
@@ -201,7 +215,10 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, o
           {/* Backdrop dismiss */}
           <div className="absolute inset-0" onClick={handleClose} aria-hidden="true" />
 
-          <div className="relative w-full sm:w-[440px] h-full bg-[#FFFFFF] text-[#24332F] shadow-2xl flex flex-col z-10 border-l border-[#D9DED8]">
+          <div
+            ref={drawerRef}
+            className="relative w-full sm:w-[440px] h-full bg-[#FFFFFF] text-[#24332F] shadow-2xl flex flex-col z-10 border-l border-[#D9DED8]"
+          >
             {/* Header: State AI Disclosure & HIPAA Safe Harbor Badging */}
             <div className="p-4 sm:p-5 border-b border-[#D9DED8] bg-[#F3F3EF] flex flex-col gap-2.5">
               <div className="flex items-center justify-between">
