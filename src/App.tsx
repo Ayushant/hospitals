@@ -5,6 +5,7 @@ import { TrustStrip } from './components/TrustStrip';
 import { ServicesSection } from './components/ServicesSection';
 import { MembershipSection } from './components/MembershipSection';
 import { CareNavigator } from './components/CareNavigator';
+import { PatientToolkit } from './components/PatientToolkit';
 import { ApproachSection } from './components/ApproachSection';
 import { ProviderSpotlight } from './components/ProviderSpotlight';
 import { TestimonialsSection } from './components/TestimonialsSection';
@@ -44,6 +45,9 @@ export default function App() {
 
         {/* 10. Care Navigator */}
         <CareNavigator />
+
+        {/* 10.5. AI Patient Toolkit — HIPAA/§1557/state-AI compliant PDF generators */}
+        <PatientToolkit />
 
         {/* 11. Our Approach (360° model & winding path) */}
         <ApproachSection />
