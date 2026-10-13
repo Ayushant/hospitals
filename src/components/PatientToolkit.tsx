@@ -306,10 +306,10 @@ export const PatientToolkit: React.FC = () => {
             id="toolkit-heading"
             className="text-3xl sm:text-4xl lg:text-[2.75rem] font-serif font-normal text-[#24332F] tracking-[-0.02em]"
           >
-            Three small tools to help you walk into your next visit prepared.
+            Prepare for your visit.
           </h2>
           <p className="text-[16px] sm:text-[17px] text-[#66716C] leading-[1.65]">
-            Each one builds a Synergy-branded PDF on your own device so you can print it, bring it, or share it with family. Nothing you type is sent to Synergy or stored anywhere. The clinic logo, legal footer, and non-diagnostic framing are already built in — so you can hand the page to your doctor without second-guessing it.
+            Organize your questions, health history, and care goals in advance for an unhurried, focused appointment.
           </p>
           <div className="flex items-center gap-3 pt-2 text-[12.5px]">
             <button
