@@ -255,7 +255,7 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ isOpen, onClose, o
                   <button
                     type="button"
                     onClick={clearSession}
-                    className="p-1.5 rounded-md text-[#66716C] hover:text-red-700 hover:bg-[#D9DED8]/50 transition-colors"
+                    className="p-1.5 rounded-md text-[#66716C] hover:text-[#C47B60] hover:bg-[#D9DED8]/50 transition-colors"
                     title="Clear session data (Purge chat history)"
                     aria-label="Clear chat session history"
                   >
